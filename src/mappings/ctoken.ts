@@ -293,7 +293,7 @@ export function handleLiquidateBorrow(event: LiquidateBorrow): void {
   // the underwater borrower. So we must get that address from the event, and
   // the repay token is the event.address
   let marketRepayToken = Market.load(event.address.toHexString())
-  let marketCTokenLiquidated = Market.load(event.params.cTokenCollateral.toHexString())
+  let marketCTokenLiquidated = Market.load(event.params.slTokenCollateral.toHexString())
   let mintID = event.transaction.hash
     .toHexString()
     .concat('-')

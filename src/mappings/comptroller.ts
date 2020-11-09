@@ -18,14 +18,14 @@ import { createMarket } from './markets'
 
 export function handleMarketListed(event: MarketListed): void {
   // Dynamically index all new listed tokens
-  CToken.create(event.params.cToken)
+  CToken.create(event.params.slToken)
   // Create the market for this token, since it's now been listed.
-  let market = createMarket(event.params.cToken.toHexString())
+  let market = createMarket(event.params.slToken.toHexString())
   market.save()
 }
 
 export function handleMarketEntered(event: MarketEntered): void {
-  let market = Market.load(event.params.cToken.toHexString())
+  let market = Market.load(event.params.slToken.toHexString())
   // Null check needed to avoid crashing on a new market added. Ideally when dynamic data
   // sources can source from the contract creation block and not the time the
   // comptroller adds the market, we can avoid this altogether
@@ -51,7 +51,7 @@ export function handleMarketEntered(event: MarketEntered): void {
 }
 
 export function handleMarketExited(event: MarketExited): void {
-  let market = Market.load(event.params.cToken.toHexString())
+  let market = Market.load(event.params.slToken.toHexString())
   // Null check needed to avoid crashing on a new market added. Ideally when dynamic data
   // sources can source from the contract creation block and not the time the
   // comptroller adds the market, we can avoid this altogether
@@ -78,12 +78,16 @@ export function handleMarketExited(event: MarketExited): void {
 
 export function handleNewCloseFactor(event: NewCloseFactor): void {
   let comptroller = Comptroller.load('1')
+  // This is the first event used in this mapping, so we use it to create the entity
+  if (comptroller == null) {
+    comptroller = new Comptroller('1')
+  }
   comptroller.closeFactor = event.params.newCloseFactorMantissa
   comptroller.save()
 }
 
 export function handleNewCollateralFactor(event: NewCollateralFactor): void {
-  let market = Market.load(event.params.cToken.toHexString())
+  let market = Market.load(event.params.slToken.toHexString())
   // Null check needed to avoid crashing on a new market added. Ideally when dynamic data
   // sources can source from the contract creation block and not the time the
   // comptroller adds the market, we can avoid this altogether

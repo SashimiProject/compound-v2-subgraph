@@ -17,10 +17,11 @@ import {
   zeroBI,
 } from './helpers'
 
-let cUSDTAddress = '0x4ae71f0e6f6976033be85b2773fd2cf88998ecc5'
-let cETHAddress = '0xc3a0936374e7da02692c7b3b2167d1e5e67d7ee8'
-let daiAddress = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-let priceOracleAddress = '0xf3e79be9b4f9793bc6cc7ec72e9a9a772dda68c6'
+// todo: 修改
+let cUSDTAddress = '0x2394de3827e233298fff0fdf6aa261070bfe013d'
+let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
+let daiAddress = '0x6b175474e89094c44da98b954eedeac495271d0f'
+let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
 
 // Used for all cERC20 contracts
 function getTokenPrice(
@@ -57,13 +58,13 @@ function getUSDTpriceETH(): BigDecimal {
 
   let oracle2 = PriceOracle.bind(oracleAddress)
   let mantissaDecimalFactorUSDC = 18 - 6 + 18
-  let bdFactorUSDC = exponentToBigDecimal(mantissaDecimalFactorUSDC)
+  let bdFactorUSDT = exponentToBigDecimal(mantissaDecimalFactorUSDC)
   let underlyingPrice = oracle2.try_getUnderlyingPrice(Address.fromString(cUSDTAddress))
   let price = zeroBI
   if (!underlyingPrice.reverted) {
     price = underlyingPrice.value
   }
-  usdPrice = price.toBigDecimal().div(bdFactorUSDC)
+  usdPrice = price.toBigDecimal().div(bdFactorUSDT)
   return usdPrice
 }
 

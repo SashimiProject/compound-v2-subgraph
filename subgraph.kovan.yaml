@@ -26,8 +26,6 @@ dataSources:
           file: ./abis/ctoken.json
         - name: PriceOracle
           file: ./abis/priceOracle.json
-        - name: PriceOracle2
-          file: ./abis/priceOracle2.json
         - name: ERC20
           file: ./abis/erc20.json
       eventHandlers:
@@ -47,6 +45,26 @@ dataSources:
           handler: handleNewMaxAssets
         - event: NewPriceOracle(address,address)
           handler: handleNewPriceOracle
+  - kind: ethereum/contract
+    name: Oracle
+    network: kovan
+    source:
+      address: "0x5dc2e01eeb2bb00dd7d399777e2563f0360c2069"
+      abi: PriceOracle
+      startBlock: 22211331
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/comptroller.ts
+      entities:
+        - Market
+      abis:
+        - name: PriceOracle
+          file: ./abis/priceOracle.json
+      eventHandlers:
+        - event: PriceUpdated(string,uint256)
+          handler: handleNewPrice
 templates:
   - name: CToken
     kind: ethereum/contract
@@ -80,7 +98,7 @@ templates:
           handler: handleRepayBorrow
         - event: LiquidateBorrow(address,address,uint256,address,uint256)
           handler: handleLiquidateBorrow
-        - event: AccrueInterest(uint256,uint256,uint256)
+        - event: AccrueInterest(uint256,uint256,uint256,uint256)
           handler: handleAccrueInterest
         - event: NewReserveFactor(uint256,uint256)
           handler: handleNewReserveFactor

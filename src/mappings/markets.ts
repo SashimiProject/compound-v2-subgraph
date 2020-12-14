@@ -11,6 +11,7 @@ import { CToken } from '../types/templates/CToken/CToken'
 import {
   exponentToBigDecimal,
   mantissaFactor,
+  priceOracleAddress,
   mantissaFactorBD,
   cTokenDecimalsBD,
   zeroBD,
@@ -18,10 +19,9 @@ import {
 } from './helpers'
 
 // todo: 修改
-let cUSDTAddress = '0x2394de3827e233298fff0fdf6aa261070bfe013d'
-let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
+let cUSDTAddress = '0x4ae71f0e6f6976033be85b2773fd2cf88998ecc5'
+let cETHAddress = '0xc3a0936374e7da02692c7b3b2167d1e5e67d7ee8'
 let daiAddress = '0x6b175474e89094c44da98b954eedeac495271d0f'
-let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
 
 // Used for all cERC20 contracts
 function getTokenPrice(
@@ -136,7 +136,7 @@ export function createMarket(marketAddress: string): Market {
 }
 
 // Only to be used after block 10678764, since it's aimed to fix the change to USD based price oracle.
-function getETHinUSD(blockNumber: i32): BigDecimal {
+export function getETHinUSD(blockNumber: i32): BigDecimal {
   let comptroller = Comptroller.load('1')
   let oracleAddress = comptroller.priceOracle as Address
   let oracle = PriceOracle.bind(oracleAddress)

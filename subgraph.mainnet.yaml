@@ -45,6 +45,26 @@ dataSources:
           handler: handleNewMaxAssets
         - event: NewPriceOracle(address,address)
           handler: handleNewPriceOracle
+  - kind: ethereum/contract
+    name: Oracle
+    network: mainnet
+    source:
+      address: "0x9ff795a1fb46f869b9158ef0579a613177d68b26"
+      abi: PriceOracle
+      startBlock: 11424756
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/oracle.ts
+      entities:
+        - Market
+      abis:
+        - name: PriceOracle
+          file: ./abis/priceOracle.json
+      eventHandlers:
+        - event: PriceUpdated(string,uint256)
+          handler: handleNewPrice
 templates:
   - name: CToken
     kind: ethereum/contract

@@ -16,11 +16,11 @@ import {
   cTokenDecimalsBD,
   zeroBD,
   zeroBI,
+  cETHAddress,
 } from './helpers'
 
 // todo: 修改
-let cUSDTAddress = '0x4ae71f0e6f6976033be85b2773fd2cf88998ecc5'
-let cETHAddress = '0xc3a0936374e7da02692c7b3b2167d1e5e67d7ee8'
+let cUSDTAddress = '0x2394de3827e233298fff0fdf6aa261070bfe013d'
 let daiAddress = '0x6b175474e89094c44da98b954eedeac495271d0f'
 
 // Used for all cERC20 contracts
@@ -136,7 +136,7 @@ export function createMarket(marketAddress: string): Market {
 }
 
 // Only to be used after block 10678764, since it's aimed to fix the change to USD based price oracle.
-export function getETHinUSD(blockNumber: i32): BigDecimal {
+function getETHinUSD(blockNumber: i32): BigDecimal {
   let comptroller = Comptroller.load('1')
   let oracleAddress = comptroller.priceOracle as Address
   let oracle = PriceOracle.bind(oracleAddress)
@@ -229,9 +229,14 @@ export function updateMarket(
       .div(exponentToBigDecimal(market.underlyingDecimals))
       .truncate(market.underlyingDecimals)
 
+    let borrowRatePerBlock = BigInt.fromI32(0)
+    let borrowRateFromChain = contract.try_borrowRatePerBlock()
+    if (!borrowRateFromChain.reverted) {
+      borrowRatePerBlock = borrowRateFromChain.value
+    }
+
     // Must convert to BigDecimal, and remove 10^18 that is used for Exp in Compound Solidity
-    market.borrowRate = contract
-      .borrowRatePerBlock()
+    market.borrowRate = borrowRatePerBlock
       .toBigDecimal()
       .times(BigDecimal.fromString('2102400'))
       .div(mantissaFactorBD)

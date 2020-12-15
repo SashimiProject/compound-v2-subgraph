@@ -18,7 +18,8 @@ export let mantissaFactorBD: BigDecimal = exponentToBigDecimal(18)
 export let cTokenDecimalsBD: BigDecimal = exponentToBigDecimal(8)
 export let zeroBI = BigInt.fromI32(0)
 export let zeroBD = BigDecimal.fromString('0')
-export let priceOracleAddress = '0x5dc2e01eeb2bb00dd7d399777e2563f0360c2069'
+export let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
+export let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
 export let ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 export function createAccountCToken(

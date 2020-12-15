@@ -10,7 +10,7 @@
     "build": "graph build",
     "create-local": "graph create sashimiproject/loan --node http://127.0.0.1:8020",
     "deploy-local": "graph deploy sashimiproject/loan --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020/",
-    "deploy": "graph deploy sashimiproject/loan --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy": "graph deploy sashimiproject/loan-kovan --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
     "deploy-staging": "graph deploy --debug --ipfs https://api.staging.thegraph.com/ipfs/ --node https://api.staging.thegraph.com/deploy/ sashimiproject/loan",
     "watch-local": "graph deploy sashimiproject/loan --watch --debug --node http://127.0.0.1:8020/ --ipfs http://localhost:5001",
     "prettier": "./node_modules/.bin/prettier —-write '**/*.ts'"

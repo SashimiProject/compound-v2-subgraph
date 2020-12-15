@@ -20,7 +20,7 @@ import {
 } from './helpers'
 
 // todo: 修改
-let cUSDTAddress = '0x2394de3827e233298fff0fdf6aa261070bfe013d'
+let cUSDTAddress = '0x4ae71f0e6f6976033be85b2773fd2cf88998ecc5'
 let daiAddress = '0x6b175474e89094c44da98b954eedeac495271d0f'
 
 // Used for all cERC20 contracts

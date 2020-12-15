@@ -56,12 +56,17 @@ dataSources:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
-      file: ./src/mappings/comptroller.ts
+      file: ./src/mappings/oracle.ts
       entities:
         - Market
+        - Comptroller
       abis:
+        - name: CToken
+          file: ./abis/ctoken.json
         - name: PriceOracle
           file: ./abis/priceOracle.json
+        - name: ERC20
+          file: ./abis/erc20.json
       eventHandlers:
         - event: PriceUpdated(string,uint256)
           handler: handleNewPrice

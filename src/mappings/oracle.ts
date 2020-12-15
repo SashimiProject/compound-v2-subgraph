@@ -1,5 +1,5 @@
 // This should be the first event acccording to etherscan but it isn't.... price oracle is. weird
-import { Address, BigDecimal } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, log } from '@graphprotocol/graph-ts'
 import { PriceUpdated } from '../types/Oracle/PriceOracle'
 import { PriceOracle } from '../types/Oracle/PriceOracle'
 import {
@@ -12,28 +12,30 @@ import {
 } from './helpers'
 import { Comptroller, Market } from '../types/schema'
 
-function getETHPrice(): BigDecimal {
-  let comptroller = Comptroller.load('1')
-  let oracleAddress = comptroller.priceOracle as Address
+function getPrice(
+  cToken: Address,
+  oracleAddress: Address,
+  underlyingDecimals: i32,
+): BigDecimal {
   let oracle = PriceOracle.bind(oracleAddress)
-  let ethPriceInUSD = oracle
-    .getUnderlyingPrice(Address.fromString(cETHAddress))
-    .toBigDecimal()
-    .div(mantissaFactorBD)
-  return ethPriceInUSD
+  let price = oracle.getUnderlyingPrice(cToken)
+  let mantissaDecimalFactor = 18 - underlyingDecimals + 18
+  let bdFactor = exponentToBigDecimal(mantissaDecimalFactor)
+  return price.toBigDecimal().div(bdFactor)
 }
 
 function getAddressBySymbol(symbol: string): Address {
   let oracle = PriceOracle.bind(Address.fromString(priceOracleAddress))
   let tokenConfig = oracle.try_getTokenConfigBySymbol(symbol)
   if (tokenConfig.reverted) {
+    log.debug('call get Token Config failed', [])
     return Address.fromString(ADDRESS_ZERO)
   }
-  return tokenConfig.value.underlying
+  log.debug('call get Token Config success', [])
+  return tokenConfig.value.slToken
 }
 
 export function handleNewPrice(event: PriceUpdated): void {
-  let price = event.params.price
   let marketAddress = getAddressBySymbol(event.params.symbol)
   if (marketAddress.equals(Address.fromString(ADDRESS_ZERO))) {
     return
@@ -42,12 +44,17 @@ export function handleNewPrice(event: PriceUpdated): void {
   if (market == null) {
     return
   }
-  let mantissaDecimalFactor = 18 - market.underlyingDecimals + 18
-  let bdFactor = exponentToBigDecimal(mantissaDecimalFactor)
-  let underlyingPrice = price.toBigDecimal().div(bdFactor)
 
-  let blockNumber = event.block.number.toI32()
-  let ethPriceInUSD = getETHPrice()
+  let ethPriceInUSD = getPrice(
+    Address.fromString(cETHAddress),
+    Address.fromString(priceOracleAddress),
+    18,
+  )
+  let underlyingPrice = getPrice(
+    marketAddress,
+    Address.fromString(priceOracleAddress),
+    market.underlyingDecimals,
+  )
 
   // if cETH, we only update USD price
   if (event.params.symbol == 'ETH') {

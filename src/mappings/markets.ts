@@ -133,7 +133,9 @@ export function createMarket(marketAddress: string): Market {
   let interestRateModelAddress = contract.try_interestRateModel()
   let reserveFactor = contract.try_reserveFactorMantissa()
   market.sashimiSpeed = getSashimiSpeed(marketAddress)
+  market.accrueInterest = zeroBD
   market.cash = zeroBD
+  market.volume = zeroBD
   market.collateralFactor = zeroBD
   market.exchangeRate = zeroBD
   market.interestRateModelAddress = interestRateModelAddress.reverted

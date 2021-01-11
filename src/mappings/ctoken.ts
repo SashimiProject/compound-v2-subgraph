@@ -1,4 +1,5 @@
 /* eslint-disable prefer-const */ // to satisfy AS compiler
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   Mint,
   Redeem,
@@ -30,6 +31,17 @@ import {
   cTokenDecimals,
 } from './helpers'
 
+function accumulateVolume(marketAddress: Address, amount: BigInt): void {
+  let marketID = marketAddress.toHexString()
+  let market = Market.load(marketID)
+  if (market == null) {
+    market = createMarket(marketID)
+  }
+  let volume = amount.toBigDecimal().div(exponentToBigDecimal(market.underlyingDecimals))
+  market.volume = market.volume.plus(volume)
+  market.save()
+}
+
 /* Account supplies assets into market and receives cTokens in exchange
  *
  * event.mintAmount is the underlying asset
@@ -59,6 +71,7 @@ export function handleMint(event: Mint): void {
     .div(exponentToBigDecimal(market.underlyingDecimals))
     .truncate(market.underlyingDecimals)
 
+  accumulateVolume(event.address, event.params.mintAmount)
   let mint = new MintEvent(mintID)
   mint.amount = cTokenAmount
   mint.to = event.params.minter
@@ -97,6 +110,8 @@ export function handleRedeem(event: Redeem): void {
     .toBigDecimal()
     .div(exponentToBigDecimal(market.underlyingDecimals))
     .truncate(market.underlyingDecimals)
+
+  accumulateVolume(event.address, event.params.redeemAmount)
 
   let redeem = new RedeemEvent(redeemID)
   redeem.amount = cTokenAmount
@@ -154,6 +169,8 @@ export function handleBorrow(event: Borrow): void {
     borrowAmountBD,
   )
   cTokenStats.save()
+
+  accumulateVolume(event.address, event.params.borrowAmount)
 
   let borrowID = event.transaction.hash
     .toHexString()
@@ -228,6 +245,8 @@ export function handleRepayBorrow(event: RepayBorrow): void {
     repayAmountBD,
   )
   cTokenStats.save()
+
+  accumulateVolume(event.address, event.params.repayAmount)
 
   let repayID = event.transaction.hash
     .toHexString()
@@ -307,6 +326,8 @@ export function handleLiquidateBorrow(event: LiquidateBorrow): void {
     .toBigDecimal()
     .div(exponentToBigDecimal(marketRepayToken.underlyingDecimals))
     .truncate(marketRepayToken.underlyingDecimals)
+
+  accumulateVolume(event.address, event.params.repayAmount)
 
   let liquidation = new LiquidationEvent(mintID)
   liquidation.amount = cTokenAmount
@@ -439,6 +460,16 @@ export function handleTransfer(event: Transfer): void {
 }
 
 export function handleAccrueInterest(event: AccrueInterest): void {
+  let marketID = event.address.toHexString()
+  let market = Market.load(marketID)
+  if (market == null) {
+    market = createMarket(marketID)
+  }
+  let interest = event.params.interestAccumulated
+    .toBigDecimal()
+    .div(exponentToBigDecimal(market.underlyingDecimals))
+  market.accrueInterest = market.accrueInterest.plus(interest)
+  market.save()
   updateMarket(event.address, event.block.number.toI32(), event.block.timestamp.toI32())
 }
 

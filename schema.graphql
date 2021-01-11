@@ -67,6 +67,9 @@ type Market @entity {
     underlyingPriceUSD: BigDecimal!
     "Underlying token decimal length"
     underlyingDecimals: Int!
+    "accrue interest"
+    accrueInterest: BigDecimal!
+    volume: BigDecimal!
 }
 
 """

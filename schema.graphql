@@ -35,6 +35,8 @@ type Market @entity {
     reserves: BigDecimal!
     "Yearly supply rate. With 2104400 blocks per year"
     supplyRate: BigDecimal!
+    "Speed of earn sashimi"
+    sashimiSpeed: BigDecimal!
     "CToken symbol"
     symbol: String!
     "CToken address"

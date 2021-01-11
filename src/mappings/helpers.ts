@@ -18,6 +18,7 @@ export let mantissaFactorBD: BigDecimal = exponentToBigDecimal(18)
 export let cTokenDecimalsBD: BigDecimal = exponentToBigDecimal(8)
 export let zeroBI = BigInt.fromI32(0)
 export let zeroBD = BigDecimal.fromString('0')
+export let comptrollerAddress = '0xb5d53ec97bed54fe4c2b77f275025c3fc132d770'
 export let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
 export let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
 export let ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
@@ -80,14 +81,14 @@ export function updateCommonCTokenStats(
 
 export function getOrCreateAccountCTokenTransaction(
   accountID: string,
-  tx_hash: Bytes,
+  txHash: Bytes,
   timestamp: BigInt,
   block: BigInt,
   logIndex: BigInt,
 ): AccountCTokenTransaction {
   let id = accountID
     .concat('-')
-    .concat(tx_hash.toHexString())
+    .concat(txHash.toHexString())
     .concat('-')
     .concat(logIndex.toString())
   let transaction = AccountCTokenTransaction.load(id)
@@ -95,7 +96,7 @@ export function getOrCreateAccountCTokenTransaction(
   if (transaction == null) {
     transaction = new AccountCTokenTransaction(id)
     transaction.account = accountID
-    transaction.tx_hash = tx_hash
+    transaction.tx_hash = txHash
     transaction.timestamp = timestamp
     transaction.block = block
     transaction.logIndex = logIndex

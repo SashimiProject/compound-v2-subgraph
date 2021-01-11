@@ -5,6 +5,7 @@ import { Address, BigDecimal, BigInt, log } from '@graphprotocol/graph-ts'
 import { Market, Comptroller } from '../types/schema'
 // PriceOracle is valid from Comptroller deployment until block 8498421
 import { PriceOracle } from '../types/templates/CToken/PriceOracle'
+import { Comptroller as ComptrollerContract } from '../types/Comptroller/Comptroller'
 import { ERC20 } from '../types/templates/CToken/ERC20'
 import { CToken } from '../types/templates/CToken/CToken'
 
@@ -17,6 +18,7 @@ import {
   zeroBD,
   zeroBI,
   cETHAddress,
+  comptrollerAddress,
 } from './helpers'
 
 // todo: 修改
@@ -68,6 +70,24 @@ function getUSDTpriceETH(): BigDecimal {
   return usdPrice
 }
 
+function getSashimiSpeed(cTokenAddress: string): BigDecimal {
+  let contract = ComptrollerContract.bind(Address.fromString(comptrollerAddress))
+  let sashimiSpeed = BigDecimal.fromString('0')
+  let resp = contract.try_sashimiSpeeds(Address.fromString(cTokenAddress))
+  if (!resp.reverted) {
+    sashimiSpeed = resp.value.toBigDecimal().div(BigDecimal.fromString('1e18'))
+  }
+  return sashimiSpeed
+}
+
+function getRate(apy: BigInt): BigDecimal {
+  return apy
+    .toBigDecimal()
+    .times(BigDecimal.fromString('2102400'))
+    .div(mantissaFactorBD)
+    .truncate(mantissaFactor)
+}
+
 export function createMarket(marketAddress: string): Market {
   let market: Market
   let contract = CToken.bind(Address.fromString(marketAddress))
@@ -112,8 +132,7 @@ export function createMarket(marketAddress: string): Market {
 
   let interestRateModelAddress = contract.try_interestRateModel()
   let reserveFactor = contract.try_reserveFactorMantissa()
-
-  market.borrowRate = zeroBD
+  market.sashimiSpeed = getSashimiSpeed(marketAddress)
   market.cash = zeroBD
   market.collateralFactor = zeroBD
   market.exchangeRate = zeroBD
@@ -122,11 +141,27 @@ export function createMarket(marketAddress: string): Market {
     : interestRateModelAddress.value
   market.name = contract.name()
   market.reserves = zeroBD
-  market.supplyRate = zeroBD
+  let borrowRatePerBlock = BigInt.fromI32(0)
+  let borrowRateFromChain = contract.try_borrowRatePerBlock()
+  if (!borrowRateFromChain.reverted) {
+    borrowRatePerBlock = borrowRateFromChain.value
+  }
+
+  // Must convert to BigDecimal, and remove 10^18 that is used for Exp in Compound Solidity
+  market.borrowRate = getRate(borrowRatePerBlock)
+
+  // This fails on only the first call to cZRX. It is unclear why, but otherwise it works.
+  // So we handle it like this.
+  let supplyRatePerBlock = contract.try_supplyRatePerBlock()
+  if (supplyRatePerBlock.reverted) {
+    log.info('***CALL FAILED*** : cERC20 supplyRatePerBlock() reverted', [])
+    market.supplyRate = zeroBD
+  } else {
+    market.supplyRate = getRate(supplyRatePerBlock.value)
+  }
   market.symbol = contract.symbol()
   market.totalBorrows = zeroBD
   market.totalSupply = zeroBD
-
   market.accrualBlockNumber = 0
   market.blockTimestamp = 0
   market.borrowIndex = zeroBD
@@ -182,7 +217,7 @@ export function updateMarket(
         market.underlyingPriceUSD = tokenPriceUSD.truncate(market.underlyingDecimals)
       }
     }
-
+    market.sashimiSpeed = getSashimiSpeed(marketAddress.toHexString())
     market.accrualBlockNumber = contract.accrualBlockNumber().toI32()
     market.blockTimestamp = blockTimestamp
     market.totalSupply = contract
@@ -236,11 +271,7 @@ export function updateMarket(
     }
 
     // Must convert to BigDecimal, and remove 10^18 that is used for Exp in Compound Solidity
-    market.borrowRate = borrowRatePerBlock
-      .toBigDecimal()
-      .times(BigDecimal.fromString('2102400'))
-      .div(mantissaFactorBD)
-      .truncate(mantissaFactor)
+    market.borrowRate = getRate(borrowRatePerBlock)
 
     // This fails on only the first call to cZRX. It is unclear why, but otherwise it works.
     // So we handle it like this.
@@ -249,11 +280,7 @@ export function updateMarket(
       log.info('***CALL FAILED*** : cERC20 supplyRatePerBlock() reverted', [])
       market.supplyRate = zeroBD
     } else {
-      market.supplyRate = supplyRatePerBlock.value
-        .toBigDecimal()
-        .times(BigDecimal.fromString('2102400'))
-        .div(mantissaFactorBD)
-        .truncate(mantissaFactor)
+      market.supplyRate = getRate(supplyRatePerBlock.value)
     }
     market.save()
   }

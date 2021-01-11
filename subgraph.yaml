@@ -86,6 +86,8 @@ templates:
         - Market
         - CTokenInfo
       abis:
+        - name: Comptroller
+          file: ./abis/comptroller.json
         - name: CToken
           file: ./abis/ctoken.json
         - name: PriceOracle

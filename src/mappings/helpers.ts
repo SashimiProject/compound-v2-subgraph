@@ -18,8 +18,11 @@ export let mantissaFactorBD: BigDecimal = exponentToBigDecimal(18)
 export let cTokenDecimalsBD: BigDecimal = exponentToBigDecimal(8)
 export let zeroBI = BigInt.fromI32(0)
 export let zeroBD = BigDecimal.fromString('0')
+// todo: 修改comptroller address
 export let comptrollerAddress = '0xb5d53ec97bed54fe4c2b77f275025c3fc132d770'
+// todo: 修改price feed address
 export let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
+// todo: 原生币的slToken地址
 export let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
 export let ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 

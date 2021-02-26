@@ -100,6 +100,7 @@ export function createMarket(marketAddress: string): Market {
     )
     market.underlyingDecimals = 18
     market.underlyingPrice = BigDecimal.fromString('1')
+    // todo: 原生币种信息
     market.underlyingName = 'Ether'
     market.underlyingSymbol = 'ETH'
     market.underlyingPriceUSD = zeroBD

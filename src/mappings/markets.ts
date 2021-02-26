@@ -136,6 +136,7 @@ export function createMarket(marketAddress: string): Market {
   market.accrueInterest = zeroBD
   market.cash = zeroBD
   market.volume = zeroBD
+  market.volumeUSD = zeroBD
   market.collateralFactor = zeroBD
   market.exchangeRate = zeroBD
   market.interestRateModelAddress = interestRateModelAddress.reverted

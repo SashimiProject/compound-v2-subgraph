@@ -39,6 +39,7 @@ function accumulateVolume(marketAddress: Address, amount: BigInt): void {
   }
   let volume = amount.toBigDecimal().div(exponentToBigDecimal(market.underlyingDecimals))
   market.volume = market.volume.plus(volume)
+  market.volumeUSD = market.volumeUSD.plus(volume.times(market.underlyingPriceUSD))
   market.save()
 }
 

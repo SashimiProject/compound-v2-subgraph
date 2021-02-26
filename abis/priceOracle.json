@@ -59,8 +59,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -194,6 +219,43 @@
         "type": "uint256"
       }
     ],
+    "name": "SashimiswapWindowUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "symbolHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldTimestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newTimestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newPrice",
+        "type": "uint256"
+      }
+    ],
     "name": "UniswapWindowUpdated",
     "type": "event"
   },
@@ -284,8 +346,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -345,8 +432,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -406,8 +518,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -467,8 +604,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -528,8 +690,33 @@
             "type": "address"
           },
           {
+            "internalType": "address",
+            "name": "sashimiswapMarket",
+            "type": "address"
+          },
+          {
             "internalType": "bool",
             "name": "isUniswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "isSashimiswapReversed",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "uniswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "sashimiswapWeight",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isDoubleAnchorTolerance",
             "type": "bool"
           }
         ],
@@ -593,6 +780,19 @@
   },
   {
     "inputs": [],
+    "name": "lowerBoundAnchorRatio2",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "maxTokens",
     "outputs": [
       {
@@ -612,7 +812,31 @@
         "type": "bytes32"
       }
     ],
-    "name": "newObservations",
+    "name": "newSashimiswapObservations",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "acc",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "newUniswapObservations",
     "outputs": [
       {
         "internalType": "uint256",
@@ -649,7 +873,31 @@
         "type": "bytes32"
       }
     ],
-    "name": "oldObservations",
+    "name": "oldSashimiswapObservations",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "acc",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "oldUniswapObservations",
     "outputs": [
       {
         "internalType": "uint256",
@@ -792,6 +1040,19 @@
   {
     "inputs": [],
     "name": "upperBoundAnchorRatio",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "upperBoundAnchorRatio2",
     "outputs": [
       {
         "internalType": "uint256",

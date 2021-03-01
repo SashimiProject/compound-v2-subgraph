@@ -34,7 +34,7 @@ function getTokenPrice(
 ): BigDecimal {
   let comptroller = Comptroller.load('1')
   let oracleAddress = comptroller.priceOracle as Address
-  if (comptroller == null) {
+  if (comptroller === null) {
     oracleAddress = Address.fromString(priceOracleAddress)
   }
 
@@ -53,7 +53,7 @@ function getTokenPrice(
 function getUSDTpriceETH(): BigDecimal {
   let comptroller = Comptroller.load('1')
   let oracleAddress = comptroller.priceOracle as Address
-  if (comptroller == null) {
+  if (comptroller === null) {
     oracleAddress = Address.fromString(priceOracleAddress)
   }
   let usdPrice: BigDecimal
@@ -177,6 +177,9 @@ export function createMarket(marketAddress: string): Market {
 // Only to be used after block 10678764, since it's aimed to fix the change to USD based price oracle.
 function getETHinUSD(blockNumber: i32): BigDecimal {
   let comptroller = Comptroller.load('1')
+  if (comptroller === null) {
+    return BigDecimal.fromString('0')
+  }
   let oracleAddress = comptroller.priceOracle as Address
   let oracle = PriceOracle.bind(oracleAddress)
   let ethPriceInUSD = oracle

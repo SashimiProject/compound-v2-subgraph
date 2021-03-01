@@ -19,11 +19,11 @@ export let cTokenDecimalsBD: BigDecimal = exponentToBigDecimal(8)
 export let zeroBI = BigInt.fromI32(0)
 export let zeroBD = BigDecimal.fromString('0')
 // todo: 修改comptroller address
-export let comptrollerAddress = '0xb5d53ec97bed54fe4c2b77f275025c3fc132d770'
+export let comptrollerAddress = '0x88fef82fdf75e32e4bc0e662d67cfcef4838f026'
 // todo: 修改price feed address
-export let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
+export let priceOracleAddress = '0xbac0669a5c01e15b7894a4c1cc9e0e87fa76536b'
 // todo: 原生币的slToken地址
-export let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
+export let cETHAddress = '0x6df484f552115fa7f54be4a6d7ae2999cadb2324'
 export let ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 
 export function createAccountCToken(

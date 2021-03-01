@@ -8,9 +8,9 @@ dataSources:
     name: Comptroller
     network: mainnet
     source:
-      address: "0xb5d53ec97bed54fe4c2b77f275025c3fc132d770"
+      address: "0x88fef82fdf75e32e4bc0e662d67cfcef4838f026"
       abi: Comptroller
-      startBlock: 11419439
+      startBlock: 5216751
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -49,9 +49,9 @@ dataSources:
     name: Oracle
     network: mainnet
     source:
-      address: "0x9ff795a1fb46f869b9158ef0579a613177d68b26"
+      address: "0xbac0669a5c01e15b7894a4c1cc9e0e87fa76536b"
       abi: PriceOracle
-      startBlock: 11424756
+      startBlock: 5233597
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4

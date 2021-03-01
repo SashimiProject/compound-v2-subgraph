@@ -22,8 +22,8 @@ import {
 } from './helpers'
 
 // todo: 修改
-let cUSDTAddress = '0x2394de3827e233298fff0fdf6aa261070bfe013d'
-let daiAddress = '0x6b175474e89094c44da98b954eedeac495271d0f'
+let cUSDTAddress = '0x87dcfe452b631f670e76dd25593363ea9ef4cc11'
+let daiAddress = '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
 
 // Used for all cERC20 contracts
 function getTokenPrice(
@@ -101,8 +101,8 @@ export function createMarket(marketAddress: string): Market {
     market.underlyingDecimals = 18
     market.underlyingPrice = BigDecimal.fromString('1')
     // todo: 原生币种信息
-    market.underlyingName = 'Ether'
-    market.underlyingSymbol = 'ETH'
+    market.underlyingName = 'BNB'
+    market.underlyingSymbol = 'BNB'
     market.underlyingPriceUSD = zeroBD
     // It is all other CERC20 contracts
   } else {

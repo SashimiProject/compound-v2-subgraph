@@ -58,7 +58,7 @@ export function handleNewPrice(event: PriceUpdated): void {
 
   // if cETH, we only update USD price
   // todo: 改为原生token 的symbol
-  if (event.params.symbol == 'BNB') {
+  if (event.params.symbol == 'HT') {
     market.underlyingPriceUSD = ethPriceInUSD.truncate(market.underlyingDecimals)
   } else {
     market.underlyingPrice = ethPriceInUSD.equals(zeroBD)

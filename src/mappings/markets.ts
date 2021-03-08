@@ -22,7 +22,7 @@ import {
 } from './helpers'
 
 // todo: 修改
-let cUSDTAddress = '0x87dcfe452b631f670e76dd25593363ea9ef4cc11'
+let cUSDTAddress = '0x7126199f79f1e5f92ad38e581bef0e5579b24147'
 let daiAddress = '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3'
 
 // Used for all cERC20 contracts
@@ -101,8 +101,8 @@ export function createMarket(marketAddress: string): Market {
     market.underlyingDecimals = 18
     market.underlyingPrice = BigDecimal.fromString('1')
     // todo: 原生币种信息
-    market.underlyingName = 'BNB'
-    market.underlyingSymbol = 'BNB'
+    market.underlyingName = 'HuobiToken'
+    market.underlyingSymbol = 'HT'
     market.underlyingPriceUSD = zeroBD
     // It is all other CERC20 contracts
   } else {

@@ -1,8 +1,15 @@
 /* eslint-disable prefer-const */ // to satisfy AS compiler
 
 // For each division by 10, add one to exponent to truncate one significant figure
-import { BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
-import { AccountCToken, Account, AccountCTokenTransaction } from '../types/schema'
+import { Address, BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import {
+  AccountCToken,
+  Account,
+  AccountCTokenTransaction,
+  Comptroller,
+  PriceAggregator,
+} from '../types/schema'
+import { Aggregator } from '../types/templates'
 
 export function exponentToBigDecimal(decimals: i32): BigDecimal {
   let bd = BigDecimal.fromString('1')
@@ -25,6 +32,10 @@ export let priceOracleAddress = '0x9ff795a1fb46f869b9158ef0579a613177d68b26'
 // todo: 原生币的slToken地址
 export let cETHAddress = '0xc597f86424eeb6599ea40f999dbb739e3aca5d82'
 export let ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
+
+// export let priceContractMap = new Map([
+//   ["",""],
+// ])
 
 export function createAccountCToken(
   cTokenStatsID: string,
@@ -107,4 +118,50 @@ export function getOrCreateAccountCTokenTransaction(
   }
 
   return transaction as AccountCTokenTransaction
+}
+
+export function initPriceAggregator(): void {
+  let comptroller = Comptroller.load('1')
+  if (comptroller == null) {
+    comptroller = new Comptroller('1')
+  }
+  if (comptroller.initPriceAggregator == true) {
+    return
+  }
+  comptroller.initPriceAggregator = true
+  comptroller.save()
+
+  createPriceAggregator(
+    '0xd3fcd40153e56110e6eeae13e12530e26c9cb4fd',
+    '0xc597f86424eeb6599ea40f999dbb739e3aca5d82',
+    8,
+    'ETH / USD',
+  )
+  createPriceAggregator(
+    '0x7104ac4abcecf1680f933b04c214b0c491d43ecc',
+    '0x09a7fb5e4499e61c7cf53acb8df7b2a8e4fb36f9',
+    8,
+    'BTC / USD',
+  )
+  createPriceAggregator(
+    '0x2918231f262f764dbb5753a95bd7684fdb313ea4',
+    '0x4588ec4ddcf1d8dbcb5a1273d22f8485885c45a4',
+    8,
+    'DAI / USD',
+  )
+}
+
+function createPriceAggregator(
+  address: string,
+  marketId: string,
+  decimals: i32,
+  pair: string,
+): void {
+  let priceAggregator = new PriceAggregator(address)
+  priceAggregator.marketId = marketId
+  priceAggregator.Decimals = decimals
+  priceAggregator.pair = pair
+  priceAggregator.save()
+
+  Aggregator.create(Address.fromString(address))
 }

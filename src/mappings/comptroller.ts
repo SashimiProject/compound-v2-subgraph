@@ -13,7 +13,12 @@ import {
 
 import { CToken } from '../types/templates'
 import { Market, Comptroller, Account } from '../types/schema'
-import { mantissaFactorBD, updateCommonCTokenStats, createAccount } from './helpers'
+import {
+  mantissaFactorBD,
+  updateCommonCTokenStats,
+  createAccount,
+  initPriceAggregator,
+} from './helpers'
 import { createMarket } from './markets'
 
 export function handleMarketListed(event: MarketListed): void {
@@ -120,4 +125,6 @@ export function handleNewPriceOracle(event: NewPriceOracle): void {
   }
   comptroller.priceOracle = event.params.newPriceOracle
   comptroller.save()
+
+  initPriceAggregator()
 }

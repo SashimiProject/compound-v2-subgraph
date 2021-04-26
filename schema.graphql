@@ -12,6 +12,7 @@ type Comptroller @entity {
     liquidationIncentive: BigInt
     "Max assets a single user can enter"
     maxAssets: BigInt
+    initPriceAggregator: Boolean!
 }
 
 """
@@ -347,4 +348,14 @@ type RepayEvent implements UnderlyingTransfer @entity {
     underlyingSymbol: String!
     "Payer of the borrow funds"
     payer: Bytes!
+}
+
+type PriceAggregator @entity {
+    id: ID!
+    marketId: String!
+    pair: String!
+    Decimals: Int!
+    currentValue: BigDecimal!
+    roundId:BigInt!
+    updatedAt: BigInt!
 }

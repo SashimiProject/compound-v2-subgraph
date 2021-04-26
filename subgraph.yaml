@@ -59,14 +59,9 @@ dataSources:
       file: ./src/mappings/oracle.ts
       entities:
         - Market
-        - Comptroller
       abis:
-        - name: CToken
-          file: ./abis/ctoken.json
         - name: PriceOracle
           file: ./abis/priceOracle.json
-        - name: ERC20
-          file: ./abis/erc20.json
       eventHandlers:
         - event: PriceUpdated(string,uint256)
           handler: handleNewPrice
@@ -86,8 +81,6 @@ templates:
         - Market
         - CTokenInfo
       abis:
-        - name: Comptroller
-          file: ./abis/comptroller.json
         - name: CToken
           file: ./abis/ctoken.json
         - name: PriceOracle
@@ -113,3 +106,23 @@ templates:
           handler: handleTransfer
         - event: NewMarketInterestRateModel(address,address)
           handler: handleNewMarketInterestRateModel
+  - name: Aggregator
+    kind: ethereum/contract
+    network: mainnet
+    source:
+      abi: PriceAggregatorProxy
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/aggregator.ts
+      entities:
+        - User
+        - Market
+        - CTokenInfo
+      abis:
+        - name: PriceAggregatorProxy
+          file: ./abis/priceAggregatorProxy.json
+      eventHandlers:
+        - event: AnswerUpdated(indexed int256,indexed uint256,uint256)
+          handler: handleAnswerUpdated

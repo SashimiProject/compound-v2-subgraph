@@ -65,6 +65,27 @@ dataSources:
       eventHandlers:
         - event: PriceUpdated(string,uint256)
           handler: handleNewPrice
+  - kind: ethereum/contract
+    name: Aggregator    
+    network: mainnet
+    source:
+      address: "0x9ff795a1fb46f869b9158ef0579a613177d68b26"
+      abi: PriceAggregatorProxy
+      startBlock: 11424756
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/aggregator.ts
+      entities:
+        - Market
+        - PriceAggregator
+      abis:
+        - name: PriceAggregatorProxy
+          file: ./abis/priceAggregatorProxy.json
+      eventHandlers:
+        - event: AnswerUpdated(indexed int256,indexed uint256,uint256)
+          handler: handleAnswerUpdated
 templates:
   - name: CToken
     kind: ethereum/contract

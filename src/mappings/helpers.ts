@@ -121,16 +121,6 @@ export function getOrCreateAccountCTokenTransaction(
 }
 
 export function initPriceAggregator(): void {
-  let comptroller = Comptroller.load('1')
-  if (comptroller == null) {
-    comptroller = new Comptroller('1')
-  }
-  if (comptroller.initPriceAggregator == true) {
-    return
-  }
-  comptroller.initPriceAggregator = true
-  comptroller.save()
-
   createPriceAggregator(
     '0xd3fcd40153e56110e6eeae13e12530e26c9cb4fd',
     '0xc597f86424eeb6599ea40f999dbb739e3aca5d82',
@@ -157,7 +147,11 @@ function createPriceAggregator(
   decimals: i32,
   pair: string,
 ): void {
-  let priceAggregator = new PriceAggregator(address)
+  let priceAggregator = PriceAggregator.load(address)
+  if (priceAggregator != null) {
+    return
+  }
+  priceAggregator = new PriceAggregator(address)
   priceAggregator.marketId = marketId
   priceAggregator.Decimals = decimals
   priceAggregator.pair = pair

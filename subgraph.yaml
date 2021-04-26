@@ -110,17 +110,18 @@ templates:
     kind: ethereum/contract
     network: mainnet
     source:
-      abi: PriceAggregatorProxy
+      abi: PriceAggregator
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
       language: wasm/assemblyscript
       file: ./src/mappings/aggregator.ts
       entities:
-        - User
         - Market
-        - CTokenInfo
+        - PriceAggregator
       abis:
+        - name: PriceAggregator
+          file: ./abis/priceAggregator.json
         - name: PriceAggregatorProxy
           file: ./abis/priceAggregatorProxy.json
       eventHandlers:

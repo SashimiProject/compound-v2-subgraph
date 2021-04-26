@@ -133,8 +133,8 @@ export function initPriceAggregator(): void {
     'BTC / USD',
   )
   createPriceAggregator(
-    '0x2918231f262f764dbb5753a95bd7684fdb313ea4',
     '0x4588ec4ddcf1d8dbcb5a1273d22f8485885c45a4',
+    '0x2918231f262f764dbb5753a95bd7684fdb313ea4',
     8,
     'DAI / USD',
   )

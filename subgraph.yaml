@@ -59,19 +59,70 @@ dataSources:
       file: ./src/mappings/oracle.ts
       entities:
         - Market
+        - Comptroller
       abis:
+        - name: CToken
+          file: ./abis/ctoken.json
         - name: PriceOracle
           file: ./abis/priceOracle.json
+        - name: ERC20
+          file: ./abis/erc20.json
       eventHandlers:
         - event: PriceUpdated(string,uint256)
           handler: handleNewPrice
   - kind: ethereum/contract
-    name: Aggregator    
+    name: EthAggregator    
     network: mainnet
     source:
       address: "0xd3fCD40153E56110e6EEae13E12530e26C9Cb4fd"
       abi: PriceAggregator
-      startBlock: 12007785
+      startBlock: 12007784
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/aggregator.ts
+      entities:
+        - Market
+        - PriceAggregator
+      abis:
+        - name: PriceAggregator
+          file: ./abis/priceAggregator.json
+        - name: PriceAggregatorProxy
+          file: ./abis/priceAggregatorProxy.json
+      eventHandlers:
+        - event: AnswerUpdated(indexed int256,indexed uint256,uint256)
+          handler: handleAnswerUpdated
+  - kind: ethereum/contract
+    name: BtcAggregator    
+    network: mainnet
+    source:
+      address: "0x7104ac4abcecf1680f933b04c214b0c491d43ecc"
+      abi: PriceAggregator
+      startBlock: 12007780
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ./src/mappings/aggregator.ts
+      entities:
+        - Market
+        - PriceAggregator
+      abis:
+        - name: PriceAggregator
+          file: ./abis/priceAggregator.json
+        - name: PriceAggregatorProxy
+          file: ./abis/priceAggregatorProxy.json
+      eventHandlers:
+        - event: AnswerUpdated(indexed int256,indexed uint256,uint256)
+          handler: handleAnswerUpdated
+  - kind: ethereum/contract
+    name: DaiAggregator    
+    network: mainnet
+    source:
+      address: "0x4588EC4ddcF1D8dbcb5a1273d22F8485885C45A4"
+      abi: PriceAggregator
+      startBlock: 11921461
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.4
@@ -104,6 +155,8 @@ templates:
         - Market
         - CTokenInfo
       abis:
+        - name: Comptroller
+          file: ./abis/comptroller.json
         - name: CToken
           file: ./abis/ctoken.json
         - name: PriceOracle

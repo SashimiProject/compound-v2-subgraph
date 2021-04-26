@@ -9,7 +9,6 @@ import {
   Comptroller,
   PriceAggregator,
 } from '../types/schema'
-import { Aggregator } from '../types/templates'
 
 export function exponentToBigDecimal(decimals: i32): BigDecimal {
   let bd = BigDecimal.fromString('1')
@@ -155,7 +154,9 @@ function createPriceAggregator(
   priceAggregator.marketId = marketId
   priceAggregator.Decimals = decimals
   priceAggregator.pair = pair
-  priceAggregator.save()
+  priceAggregator.currentValue = zeroBD
+  priceAggregator.updatedAt = zeroBI
+  priceAggregator.roundId = zeroBI
 
-  Aggregator.create(Address.fromString(address))
+  priceAggregator.save()
 }

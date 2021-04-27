@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */ // to satisfy AS compiler
 
 // For each division by 10, add one to exponent to truncate one significant figure
-import { Address, BigDecimal, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigDecimal, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import {
   AccountCToken,
   Account,
@@ -9,6 +9,7 @@ import {
   Comptroller,
   PriceAggregator,
 } from '../types/schema'
+import { Aggregator } from '../types/templates'
 
 export function exponentToBigDecimal(decimals: i32): BigDecimal {
   let bd = BigDecimal.fromString('1')
@@ -159,4 +160,6 @@ function createPriceAggregator(
   priceAggregator.roundId = zeroBI
 
   priceAggregator.save()
+
+  Aggregator.create(Address.fromString(address))
 }
